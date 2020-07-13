@@ -9,6 +9,7 @@ import android.widget.GridLayout
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.get
 import androidx.lifecycle.Observer
 
 
@@ -36,6 +37,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.board.observe(this, Observer { array ->
             renderBoard(gridLayout, array)
         })
+
+        viewModel.token.observe(this, Observer {
+            updateBoard(gridLayout, it)
+        })
     }
 
     /**
@@ -47,11 +52,6 @@ class MainActivity : AppCompatActivity() {
                 val textView = TextView(this)
                 val pos = i * gridLayout.columnCount + j
                 textView.text = array[pos].toString()
-                if (viewModel.token == pos) { //Show green bg if token is on this position
-                    textView.background = getDrawable(R.drawable.border_green)
-                } else {
-                    textView.background = getDrawable(R.drawable.border_gray)
-                }
                 textView.gravity = Gravity.CENTER
                 val myGLP = GridLayout.LayoutParams()
                 //Start from bottom row
@@ -60,6 +60,17 @@ class MainActivity : AppCompatActivity() {
                 myGLP.width = 0
                 myGLP.height = 0
                 gridLayout.addView(textView, myGLP)
+            }
+        }
+    }
+
+
+    private fun updateBoard(gridLayout: GridLayout, token: Int) {
+        for (i in 0 until gridLayout.childCount) {
+            if (token == i) { //Show green bg if token is on this position
+                gridLayout.get(i).background = getDrawable(R.drawable.border_green)
+            } else {
+                gridLayout.get(i).background = getDrawable(R.drawable.border_gray)
             }
         }
     }
