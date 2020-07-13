@@ -4,6 +4,7 @@ import MainViewModel
 import N
 import android.os.Bundle
 import android.view.Gravity
+import android.widget.Button
 import android.widget.GridLayout
 import android.widget.TextView
 import androidx.activity.viewModels
@@ -19,8 +20,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val gridLayout: GridLayout = this.findViewById(R.id.board)
+        val gridLayout: GridLayout = findViewById(R.id.board)
         gridLayout.columnCount = N
+
+        val diceValue: TextView = findViewById(R.id.dice_value)
+        val diceButton: Button = findViewById(R.id.dice_button)
+        diceButton.setOnClickListener {
+            viewModel.diceRolled()
+        }
+
+        viewModel.dice.observe(this, Observer {
+            diceValue.text = it.toString()
+        })
 
         viewModel.board.observe(this, Observer { array ->
             renderBoard(gridLayout, array)

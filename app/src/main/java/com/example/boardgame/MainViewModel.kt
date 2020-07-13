@@ -11,10 +11,43 @@ class MainViewModel : ViewModel() {
     val board: LiveData<IntArray>
         get() = _board
 
+    //Keep track of dice value
+    private val _dice = MutableLiveData<Int>()
+    val dice: LiveData<Int>
+        get() = _dice
+
+
     //Keep track of current token
-    private val _token = 0
+    private var _token = 0
     val token: Int
         get() = _token
+
+    fun diceRolled() {
+        val diceValue = (1..6).random()
+        //Update dice value
+        _dice.value = diceValue
+        //Compute new token position
+        _token = findNextPosition(_board.value!!, _token + diceValue)
+        //Update board
+        _board.value = _board.value
+    }
+
+
+    private fun findNextPosition(array: IntArray, curPos: Int): Int {
+        if (curPos <= 0) {
+            return 0
+        }
+        if (curPos > array.size) {
+            return array.size - 1
+        }
+
+        if (array[curPos] == 0) {
+            return curPos
+        }
+
+        return findNextPosition(array, curPos + array[curPos])
+    }
+
 
     init {
         val array = IntArray(N * N)
@@ -24,6 +57,9 @@ class MainViewModel : ViewModel() {
         array[0] = 0
         array[N * N - 1] = 0
         removeLoops(array)
+
+        _token = 0
+        _dice.value = 0
         _board.value = array
     }
 
@@ -48,8 +84,5 @@ class MainViewModel : ViewModel() {
             }
         }
     }
-
-
-
 
 }
