@@ -62,10 +62,10 @@ class MainViewModel : ViewModel() {
         for (i in 0 until (array.size)) {
             //We can tweak this to increase or decrease the random to zero ratio
             val keepZero = (0..1).random()
-            if (keepZero == 0) {
-                array[i] = (-5..5).random()
-            } else {
+            if (keepZero == 0 || previous5Random(i, array)) {
                 array[i] = 0
+            } else {
+                array[i] = (-5..5).random()
             }
         }
         array[0] = 0 //Set start as 0
@@ -75,6 +75,23 @@ class MainViewModel : ViewModel() {
         _board.value = array
         _token.value = 0
         _dice.value = 0
+    }
+
+    /**
+     * Find if previous 5 values are not 0 to prevent dead hole
+     * This will prevent the condition where 0,-1,-2,-3,-4,-5 are consequent and keep the token
+     * stuck at position 0
+     */
+    private fun previous5Random(pos: Int, array: IntArray): Boolean {
+        if (pos < 5) {
+            return false
+        }
+        for (i in pos - 5 until pos) {
+            if (array[i] == 0) {
+                return false
+            }
+        }
+        return true
     }
 
     /**
