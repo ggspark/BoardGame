@@ -22,7 +22,11 @@ class MainViewModel : ViewModel() {
     val token: Int
         get() = _token
 
+    /**
+     * Function called when dice rolled
+     */
     fun diceRolled() {
+        //Select the next dice value
         val diceValue = (1..6).random()
         //Update dice value
         _dice.value = diceValue
@@ -32,7 +36,9 @@ class MainViewModel : ViewModel() {
         _board.value = _board.value
     }
 
-
+    /**
+     * Recursive function to find the next position of token
+     */
     private fun findNextPosition(array: IntArray, curPos: Int): Int {
         if (curPos < 0) {
             return 0
@@ -44,14 +50,19 @@ class MainViewModel : ViewModel() {
         if (array[curPos] == 0) {
             return curPos
         }
-
         return findNextPosition(array, curPos + array[curPos])
     }
 
 
+    /**
+     * Initialise the board and view model
+     */
     init {
+        //Create a single dimension array of N*N size
         val array = IntArray(N * N)
+        //Initialise the array with random values or 0 with a 50-50 probability
         for (i in 0 until (array.size)) {
+            //We can tweak this to increase or decrease the random to zero ratio
             val keepZero = (0..1).random()
             if (keepZero == 0) {
                 array[i] = (-5..5).random()
@@ -59,15 +70,18 @@ class MainViewModel : ViewModel() {
                 array[i] = 0
             }
         }
-        array[0] = 0
-        array[N * N - 1] = 0
-        removeLoops(array)
-
+        array[0] = 0 //Set start as 0
+        array[N * N - 1] = 0 //Set end as 0
+        removeLoops(array) //Remove edge cases
+        //Initialise values
         _token = 0
         _dice.value = 0
         _board.value = array
     }
 
+    /**
+     * Function to remove edge cases like exceeding bounds or cycles in the board
+     */
     private fun removeLoops(array: IntArray) {
         for (i in 0 until (array.size)) {
             //Mark 0 if exceeding bounds
