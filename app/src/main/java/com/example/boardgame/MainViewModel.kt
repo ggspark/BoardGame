@@ -6,10 +6,15 @@ const val N = 8
 
 class MainViewModel : ViewModel() {
 
-    //Keep track of current word count
-    private val _array = MutableLiveData<IntArray>()
-    val array: LiveData<IntArray>
-        get() = _array
+    //Keep track of current board
+    private val _board = MutableLiveData<IntArray>()
+    val board: LiveData<IntArray>
+        get() = _board
+
+    //Keep track of current token
+    private val _token = 0
+    val token: Int
+        get() = _token
 
     init {
         val array = IntArray(N * N)
@@ -19,7 +24,7 @@ class MainViewModel : ViewModel() {
         array[0] = 0
         array[N * N - 1] = 0
         removeLoops(array)
-        _array.value = array
+        _board.value = array
     }
 
     private fun removeLoops(array: IntArray) {

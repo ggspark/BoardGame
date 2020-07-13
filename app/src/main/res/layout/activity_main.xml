@@ -10,7 +10,7 @@
         android:id="@+id/board"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@drawable/border"
+        android:background="@drawable/border_gray"
         android:padding="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"

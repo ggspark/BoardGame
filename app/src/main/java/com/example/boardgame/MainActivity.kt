@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
         val gridLayout: GridLayout = this.findViewById(R.id.board)
         gridLayout.columnCount = N
 
-        viewModel.array.observe(this, Observer { array ->
+        viewModel.board.observe(this, Observer { array ->
             renderBoard(gridLayout, array)
         })
 
@@ -33,8 +33,13 @@ class MainActivity : AppCompatActivity() {
         for (i in 0 until gridLayout.columnCount) {
             for (j in 0 until gridLayout.columnCount) {
                 val textView = TextView(this)
-                textView.text = array[i * gridLayout.columnCount + j].toString()
-                textView.background = getDrawable(R.drawable.border)
+                val pos = i * gridLayout.columnCount + j
+                textView.text = array[pos].toString()
+                if (viewModel.token == pos) {
+                    textView.background = getDrawable(R.drawable.border_green)
+                } else {
+                    textView.background = getDrawable(R.drawable.border_gray)
+                }
                 textView.gravity = Gravity.CENTER
                 val myGLP = GridLayout.LayoutParams()
                 myGLP.rowSpec = GridLayout.spec(i, 1, 1f)
