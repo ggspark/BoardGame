@@ -34,10 +34,10 @@ class MainViewModel : ViewModel() {
 
 
     private fun findNextPosition(array: IntArray, curPos: Int): Int {
-        if (curPos <= 0) {
+        if (curPos < 0) {
             return 0
         }
-        if (curPos > array.size) {
+        if (curPos >= array.size) {
             return array.size - 1
         }
 
@@ -52,7 +52,12 @@ class MainViewModel : ViewModel() {
     init {
         val array = IntArray(N * N)
         for (i in 0 until (array.size)) {
-            array[i] = (-5..5).random()
+            val keepZero = (0..1).random()
+            if (keepZero == 0) {
+                array[i] = (-5..5).random()
+            } else {
+                array[i] = 0
+            }
         }
         array[0] = 0
         array[N * N - 1] = 0
