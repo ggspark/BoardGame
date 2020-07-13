@@ -18,8 +18,8 @@ class MainViewModel : ViewModel() {
 
 
     //Keep track of current token
-    private var _token = MutableLiveData<Int>()
-    val token: LiveData<Int>
+    private var _token = MutableLiveData<Pair<Int, Int>>()
+    val token: LiveData<Pair<Int, Int>>
         get() = _token
 
     /**
@@ -31,7 +31,9 @@ class MainViewModel : ViewModel() {
         //Update dice value
         _dice.value = diceValue
         //Compute new token position
-        _token.value = findNextPosition(_board.value!!, _token.value!!.plus(diceValue))
+        val prev = _token.value!!.second
+        val cur = findNextPosition(_board.value!!, prev + diceValue)
+        _token.value = Pair(prev, cur)
     }
 
     /**
@@ -73,7 +75,7 @@ class MainViewModel : ViewModel() {
         removeLoops(array) //Remove edge cases
         //Initialise values
         _board.value = array
-        _token.value = 0
+        _token.value = Pair(0, 0)
         _dice.value = 0
     }
 

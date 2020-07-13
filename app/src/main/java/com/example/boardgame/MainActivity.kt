@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
         })
 
         viewModel.token.observe(this, Observer {
-            updateBoard(gridLayout, it)
+            gridLayout[it.first].background = getDrawable(R.drawable.border_gray)
+            gridLayout[it.second].background = getDrawable(R.drawable.border_green)
         })
     }
 
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             for (j in 0 until gridLayout.columnCount) {
                 val textView = TextView(this)
                 val pos = i * gridLayout.columnCount + j
+                textView.background = getDrawable(R.drawable.border_gray)
                 textView.text = array[pos].toString()
                 textView.gravity = Gravity.CENTER
                 val myGLP = GridLayout.LayoutParams()
@@ -64,14 +66,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
-    private fun updateBoard(gridLayout: GridLayout, token: Int) {
-        for (i in 0 until gridLayout.childCount) {
-            if (token == i) { //Show green bg if token is on this position
-                gridLayout.get(i).background = getDrawable(R.drawable.border_green)
-            } else {
-                gridLayout.get(i).background = getDrawable(R.drawable.border_gray)
-            }
-        }
-    }
 }
