@@ -36,17 +36,18 @@ class MainActivity : AppCompatActivity() {
         viewModel.board.observe(this, Observer { array ->
             renderBoard(gridLayout, array)
         })
-
-
     }
 
+    /**
+     * Render N*N 2d board on screen based on single dimension array of N*N
+     */
     private fun renderBoard(gridLayout: GridLayout, array: IntArray) {
         for (i in 0 until gridLayout.columnCount) {
             for (j in 0 until gridLayout.columnCount) {
                 val textView = TextView(this)
                 val pos = i * gridLayout.columnCount + j
                 textView.text = array[pos].toString()
-                if (viewModel.token == pos) {
+                if (viewModel.token == pos) { //Show green bg if token is on this position
                     textView.background = getDrawable(R.drawable.border_green)
                 } else {
                     textView.background = getDrawable(R.drawable.border_gray)
