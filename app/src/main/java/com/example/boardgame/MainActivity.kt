@@ -54,7 +54,8 @@ class MainActivity : AppCompatActivity() {
                 }
                 textView.gravity = Gravity.CENTER
                 val myGLP = GridLayout.LayoutParams()
-                myGLP.rowSpec = GridLayout.spec(i, 1, 1f)
+                //Start from bottom row
+                myGLP.rowSpec = GridLayout.spec(gridLayout.columnCount - i, 1, 1f)
                 myGLP.columnSpec = GridLayout.spec(j, 1, 1f)
                 myGLP.width = 0
                 myGLP.height = 0
